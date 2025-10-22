@@ -10,6 +10,7 @@ return {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
+      require "custom.configs.lspconfig"
     end,
   },
 
@@ -25,4 +26,34 @@ return {
   -- 		},
   -- 	},
   -- },
+
+  {
+    "github/copilot.vim",
+     -- auto load on startup
+    event = "InsertEnter",
+  },
+
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "gopls",
+        "typescript-language-server",
+      },
+    },
+  },
+
+  {
+    "hedyhli/outline.nvim",
+    config = function ()
+      require("outline").setup()
+    end
+  },
+  {
+    "navarasu/onedark.nvim",
+    config = function ()
+      require("onedark").setup()
+    end
+  }
+
 }
