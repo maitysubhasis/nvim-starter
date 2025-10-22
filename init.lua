@@ -40,8 +40,6 @@ local map = function(type, key, value)
 	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
 end
 
--- keymap to jump to definition
-map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
--- adds a entry in the 
-vim.keymap.set('n', '<leader>fr', require('telescope.builtin').lsp_references, { desc = '[F]ind [R]eferences' })
 
+
+title=true
