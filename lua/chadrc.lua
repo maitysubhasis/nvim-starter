@@ -19,7 +19,7 @@ M.base46 = {
 --       tabufline = {
 --          lazyload = false
 --      }
---}
+-- }
 
 --M.plugins = "custom.plugins"
 
