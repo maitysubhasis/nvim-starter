@@ -34,6 +34,7 @@ require "autocmds"
 
 vim.schedule(function()
   require "mappings"
+  require "floaterminal"
 end)
 
 local map = function(type, key, value)
@@ -42,4 +43,3 @@ end
 
 
 
-title=true

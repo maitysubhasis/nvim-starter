@@ -19,7 +19,8 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-      local lspconfig = vim.lsp.config  -- ✅ new entry point
+      require "configs.lspconfig"
+      require "custom.configs.lspconfig"
     end,
   },
 
@@ -66,6 +67,7 @@ return {
       ensure_installed = {
         "gopls",
         "typescript-language-server",
+        "pyright"
       },
     },
   },
@@ -112,6 +114,55 @@ return {
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
     },
   },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-context",
+  --   event = "BufReadPost",
+  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
+  --   opts = {
+  --     enable = true,
+  --     max_lines = 0,       -- no limit
+  --     trim_scope = "outer",
+  --     patterns = {
+  --       default = {
+  --         "class",
+  --         "function",
+  --         "method",
+  --         "for",
+  --         "while",
+  --         "if",
+  --         "switch",
+  --         "case",
+  --       },
+  --     },
+  --   },
+  -- },
+  {
+    "nvimtools/none-ls.nvim", -- formerly "jose-elias-alvarez/null-ls.nvim"
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local null_ls = require("null-ls")
 
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.eslint_d,
+          null_ls.builtins.diagnostics.eslint_d,
+          null_ls.builtins.code_actions.eslint_d,
+        },
+        on_attach = function(client, bufnr)
+          -- Auto-fix + format before save
+          if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ async = false })
+              end,
+            })
+          end
+        end,
+      })
+    end,
+  },
 }
 
