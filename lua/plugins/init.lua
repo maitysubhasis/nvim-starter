@@ -114,28 +114,28 @@ return {
       { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
     },
   },
-  -- {
-  --   "nvim-treesitter/nvim-treesitter-context",
-  --   event = "BufReadPost",
-  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
-  --   opts = {
-  --     enable = true,
-  --     max_lines = 0,       -- no limit
-  --     trim_scope = "outer",
-  --     patterns = {
-  --       default = {
-  --         "class",
-  --         "function",
-  --         "method",
-  --         "for",
-  --         "while",
-  --         "if",
-  --         "switch",
-  --         "case",
-  --       },
-  --     },
-  --   },
-  -- },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "BufReadPost",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      enable = true,
+      max_lines = 0,       -- no limit
+      trim_scope = "outer",
+      patterns = {
+        default = {
+          "class",
+          "function",
+          "method",
+          "for",
+          "while",
+          "if",
+          "switch",
+          "case",
+        },
+      },
+    },
+  },
   {
     "nvimtools/none-ls.nvim", -- formerly "jose-elias-alvarez/null-ls.nvim"
     event = { "BufReadPre", "BufNewFile" },
