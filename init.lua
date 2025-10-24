@@ -47,23 +47,24 @@ end
 vim.diagnostic.config({
     virtual_text = {
         severity = { min = vim.diagnostic.severity.ERROR }
-    }
+    },
+    signs = false  -- Disable diagnostic signs (including bulb icon)
 })
 
 -- Different prefix icons by severity
-vim.diagnostic.config({
-    virtual_text = {
-        prefix = function(diagnostic)
-            local icons = {
-                [vim.diagnostic.severity.ERROR] = '✘',
-                [vim.diagnostic.severity.WARN] = '▲',
-                [vim.diagnostic.severity.HINT] = '⚑',
-                [vim.diagnostic.severity.INFO] = '»',
-            }
-            return icons[diagnostic.severity]
-        end,
-    }
-})
+-- vim.diagnostic.config({
+--     virtual_text = {
+--         prefix = function(diagnostic)
+--             local icons = {
+--                 [vim.diagnostic.severity.ERROR] = '✘',
+--                 [vim.diagnostic.severity.WARN] = '▲',
+--                 [vim.diagnostic.severity.HINT] = '⚑',
+--                 [vim.diagnostic.severity.INFO] = '»',
+--             }
+--             return icons[diagnostic.severity]
+--         end,
+--     }
+-- })
 
 -- Custom colors for inline hints
 vim.cmd([[
@@ -81,3 +82,5 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     -- vim.cmd("!npx prettier --write %") -- Replace with your desired command
   end,
 })
+
+

@@ -27,3 +27,48 @@ vim.keymap.set('i', '<C-l>', 'copilot#Accept("<CR>")', {
   silent = true,
   replace_keycodes = false,
 })
+
+
+vim.keymap.set('n', '<leader>dw', function()
+  local dbui = vim.b.dbui_db_key_name
+  
+  if not dbui then
+    vim.notify("No active DBUI connection found", vim.log.levels.ERROR)
+    return
+  end
+
+   -- Remove _files suffix if present
+  local connection_name = dbui:gsub("_file$", "")
+  
+  local query_name = vim.fn.input('Query name: ')
+  if query_name == '' then
+    return
+  end
+  
+  local connection_dir = vim.fn.expand(vim.g.db_ui_save_location) .. '/' .. connection_name
+  
+  vim.notify(connection_dir)
+  -- Create directory if it doesn't exist
+  vim.fn.system('mkdir -p ' .. vim.fn.shellescape(connection_dir))
+
+  
+  local save_path = connection_dir .. '/' .. query_name
+  vim.cmd('write ' .. save_path)
+  vim.notify('Saved: ' .. query_name, vim.log.levels.INFO)
+
+  -- - Refresh DBUI - try one of these:
+  vim.schedule(function()
+    if vim.fn.exists(':DBUIFindBuffer') == 2 then
+      vim.cmd('DBUIFindBuffer')
+    end
+    -- Force a redraw
+    pcall(function()
+      require('dbui').refresh()
+    end)
+  end)
+
+end, { desc = 'DBUI Save Query' })
+
+vim.keymap.set('n', '<leader>du', function() 
+  vim.cmd('DBUIToggle')
+end)
