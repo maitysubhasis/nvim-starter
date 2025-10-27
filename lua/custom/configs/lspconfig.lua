@@ -2,6 +2,7 @@
 -- local capabilities = require("configs.lspconfig").capabilities
 
 local lspconfig = vim.lsp.config  -- ✅ new entry point
+
 local util = require "lspconfig/util"
 
 

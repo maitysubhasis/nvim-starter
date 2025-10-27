@@ -19,6 +19,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
+      
       require "configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
@@ -200,6 +201,61 @@ return {
         -- Your config here
       })
     end
+  },
+  {
+    "kdheepak/lazygit.nvim",
+    lazy = true,
+    cmd = {
+        "LazyGit",
+        "LazyGitConfig",
+        "LazyGitCurrentFile",
+        "LazyGitFilter",
+        "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+        { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    }
+  },
+  {
+    "tpope/vim-fugitive" 
+  },
+  {
+    "rmagatti/auto-session",
+    lazy = false,
+
+    ---enables autocomplete for opts
+    ---@module "auto-session"
+    ---@type AutoSession.Config
+    opts = {
+      suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+      -- log_level = 'debug',
+    },
+    ---@type SessionLens
+    session_lens = {
+      picker = nil, -- "telescope"|"snacks"|"fzf"|"select"|nil Pickers are detected automatically but you can also set one manually. Falls back to vim.ui.select
+      load_on_setup = true, -- Only used for telescope, registers the telescope extension at startup so you can use :Telescope session-lens
+      picker_opts = nil, -- Table passed to Telescope / Snacks / Fzf-Lua to configure the picker. See below for more information
+
+      ---@type SessionLensMappings
+      mappings = {
+        -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
+        delete_session = { "i", "<C-d>" }, -- mode and key for deleting a session from the picker
+        alternate_session = { "i", "<C-s>" }, -- mode and key for swapping to alternate session from the picker
+        copy_session = { "i", "<C-y>" }, -- mode and key for copying a session from the picker
+      },
+
+      ---@type SessionControl
+      session_control = {
+        control_dir = vim.fn.stdpath("data") .. "/auto_session/", -- Auto session control dir, for control files, like alternating between two sessions with session-lens
+        control_filename = "session_control.json", -- File name of the session control file
+      },
+    },
   }
 
 }

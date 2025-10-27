@@ -52,19 +52,19 @@ vim.diagnostic.config({
 })
 
 -- Different prefix icons by severity
--- vim.diagnostic.config({
---     virtual_text = {
---         prefix = function(diagnostic)
---             local icons = {
---                 [vim.diagnostic.severity.ERROR] = '✘',
---                 [vim.diagnostic.severity.WARN] = '▲',
---                 [vim.diagnostic.severity.HINT] = '⚑',
---                 [vim.diagnostic.severity.INFO] = '»',
---             }
---             return icons[diagnostic.severity]
---         end,
---     }
--- })
+vim.diagnostic.config({
+    virtual_text = {
+        prefix = function(diagnostic)
+            local icons = {
+                [vim.diagnostic.severity.ERROR] = '✘',
+                [vim.diagnostic.severity.WARN] = '▲',
+                [vim.diagnostic.severity.HINT] = '⚑',
+                [vim.diagnostic.severity.INFO] = '»',
+            }
+            return icons[diagnostic.severity]
+        end,
+    }
+})
 
 -- Custom colors for inline hints
 vim.cmd([[
@@ -84,3 +84,50 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 
+
+
+-- show git blame inline text
+require('gitsigns').setup({
+  current_line_blame = true,  -- Enable blame on current line
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = 'eol',  -- 'eol' | 'overlay' | 'right_align'
+    delay = 500,  -- Delay in milliseconds before showing blame
+    ignore_whitespace = false,
+  },
+  current_line_blame_formatter = '   <author>, <author_time:%Y-%m-%d> - <summary>',
+})
+
+
+vim.api.nvim_set_hl(0, 'Search', {
+  bg = 'LightBlue',
+  fg = 'Black'
+})
+
+-- Create an autocommand group with the option to clear it first.
+-- This prevents the autocommand from being registered multiple times.
+vim.api.nvim_create_augroup("FocusLostGroup", { clear = true })
+vim.api.nvim_create_augroup("LeaveBufferGroup", { clear = true })
+
+-- Create the autocommand itself.
+vim.api.nvim_create_autocmd("FocusLost", {
+  group = "FocusLostGroup",
+  callback = function()
+    -- Use vim.cmd to execute the Vimscript command in Lua.
+    -- The silent! and wall commands are executed within this call.
+    vim.cmd("silent! wall")
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufLeave", {
+  group = "LeaveBufferGroup",
+  pattern = "*",
+  callback = function()
+    -- This function is executed when you leave a buffer
+    vim.cmd("silent! wall")
+    -- You can add more Lua code here
+  end,
+})
+
+vim.cmd [[set title]]
+vim.cmd [[set relativenumber]]
