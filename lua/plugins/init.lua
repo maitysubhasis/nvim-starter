@@ -19,7 +19,6 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-      
       require "configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
@@ -46,15 +45,15 @@ return {
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
+  {
+  	"nvim-treesitter/nvim-treesitter",
+  	opts = {
+  		ensure_installed = {
+  			"vim", "lua", "vimdoc",
+       "html", "css", "typescript", "tsx", "javascript"
+  		},
+  	},
+  },
 
   {
     "github/copilot.vim",
@@ -121,7 +120,7 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       enable = true,
-      max_lines = 0,       -- no limit
+      max_lines = 4,       -- no limit
       trim_scope = "outer",
       patterns = {
         default = {
@@ -137,34 +136,34 @@ return {
       },
     },
   },
-  {
-    "nvimtools/none-ls.nvim", -- formerly "jose-elias-alvarez/null-ls.nvim"
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local null_ls = require("null-ls")
+  -- {
+  --   "nvimtools/none-ls.nvim", -- formerly "jose-elias-alvarez/null-ls.nvim"
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     local null_ls = require("null-ls")
 
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.eslint_d,
-          null_ls.builtins.diagnostics.eslint_d,
-          null_ls.builtins.code_actions.eslint_d,
-        },
-        on_attach = function(client, bufnr)
-          -- Auto-fix + format before save
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ async = false })
-              end,
-            })
-          end
-        end,
-      })
-    end,
-  },
+  --     null_ls.setup({
+  --       sources = {
+  --         null_ls.builtins.formatting.eslint_d,
+  --         null_ls.builtins.diagnostics.eslint_d,
+  --         null_ls.builtins.code_actions.eslint_d,
+  --       },
+  --       on_attach = function(client, bufnr)
+  --         -- Auto-fix + format before save
+  --         if client.supports_method("textDocument/formatting") then
+  --           vim.api.nvim_clear_autocmds({ buffer = bufnr })
+  --           vim.api.nvim_create_autocmd("BufWritePre", {
+  --             buffer = bufnr,
+  --             callback = function()
+  --               vim.lsp.buf.format({ async = false })
+  --             end,
+  --           })
+  --         end
+  --       end,
+  --     })
+  --   end,
+  -- },
   {
   'kristijanhusak/vim-dadbod-ui',
     dependencies = {
@@ -256,6 +255,37 @@ return {
         control_filename = "session_control.json", -- File name of the session control file
       },
     },
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = { "kevinhwang91/promise-async" },
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      -- Set fold options
+      vim.o.foldcolumn = "1"        -- '0' disables, '1' shows one column
+      vim.o.foldlevel = 99          -- Ensure folds are open by default
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+
+      -- Setup UFO
+      require("ufo").setup({
+        provider_selector = function(bufnr, filetype, buftype)
+          return { "lsp", "indent" }
+        end,
+      })
+
+      -- Keymaps
+      vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
+      vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })
+      vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds, { desc = "Open folds except kinds" })
+      vim.keymap.set("n", "zm", require("ufo").closeFoldsWith, { desc = "Close folds with kind" })
+      vim.keymap.set("n", "K", function()
+        local winid = require("ufo").peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.lsp.buf.hover()
+        end
+      end, { desc = "Peek fold or show hover" })
+    end,
   }
 
 }

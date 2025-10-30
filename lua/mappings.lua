@@ -72,3 +72,5 @@ end, { desc = 'DBUI Save Query' })
 vim.keymap.set('n', '<leader>du', function() 
   vim.cmd('DBUIToggle')
 end)
+
+vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, {desc = "LSP Rename"})
