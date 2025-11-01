@@ -1,7 +1,7 @@
 local plugins = {
-  {
-    "github/copilot.vim"
-  },
+  -- {
+  --   "github/copilot.vim"
+  -- },
 
   -- {
   --   "williamboman/mason.nvim",

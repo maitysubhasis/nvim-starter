@@ -21,6 +21,7 @@ return {
     config = function()
       require "configs.lspconfig"
       require "custom.configs.lspconfig"
+      
     end,
   },
 
@@ -32,9 +33,17 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
+
     config = function()
       require("lspsaga").setup({
         ui = { border = "rounded" },
+        code_action = {
+          lightbulb = {
+            enable = false,
+            sign = false,
+            virtual_text = false,
+          },
+        },
       })
 
       -- Optional: keybinding for hover
@@ -50,16 +59,17 @@ return {
   	opts = {
   		ensure_installed = {
   			"vim", "lua", "vimdoc",
-       "html", "css", "typescript", "tsx", "javascript"
+        "html", "css", "typescript", 
+        "tsx", "javascript",
+        "c", "cpp",
   		},
   	},
   },
-
-  {
-    "github/copilot.vim",
-     -- auto load on startup
-    event = "InsertEnter",
-  },
+  -- {
+  --   "github/copilot.vim",
+  --    -- auto load on startup
+  --   event = "InsertEnter",
+  -- },
 
   {
     "williamboman/mason.nvim",
@@ -195,6 +205,10 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons'
     },
+    event = "LspAttach",
+    keys = {
+      { "<leader>o", "<cmd>AerialToggle!<CR>", desc = "Toggle outline" },
+    },
     config = function()
       require('aerial').setup({
         -- Your config here
@@ -286,6 +300,111 @@ return {
         end
       end, { desc = "Peek fold or show hover" })
     end,
-  }
+  },
+  {
+    "MattesGroeger/vim-bookmarks",
+    event = "VeryLazy",
+    keys = {
+      { "mm", "<cmd>BookmarkToggle<CR>", desc = "Toggle bookmark" },
+      { "mi", "<cmd>BookmarkAnnotate<CR>", desc = "Add bookmark annotation" },
+      { "ma", "<cmd>BookmarkShowAll<CR>", desc = "Show all bookmarks" },
+      { "mn", "<cmd>BookmarkNext<CR>", desc = "Next bookmark" },
+      { "mp", "<cmd>BookmarkPrev<CR>", desc = "Previous bookmark" },
+    },
+  },
+  {
+    "rhysd/clever-f.vim",
+    event = "VeryLazy",
+    config = function()
+      vim.g.clever_f_smart_case = 1
+      vim.g.clever_f_fix_key_direction = 1
+    end,
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+  {
+    "folke/trouble.nvim",
+    config = function() require("trouble").setup({}) end,
+  },
+  -- {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'}
 
+  -- DAP (Debug Adapter Protocol)
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      "theHamsta/nvim-dap-virtual-text",
+    },
+    keys = {
+      { "<leader>db", "<cmd>DapToggleBreakpoint<CR>", desc = "Toggle Breakpoint" },
+      { "<leader>dc", "<cmd>DapContinue<CR>", desc = "Continue" },
+      { "<leader>di", "<cmd>DapStepInto<CR>", desc = "Step Into" },
+      { "<leader>do", "<cmd>DapStepOver<CR>", desc = "Step Over" },
+      { "<leader>dO", "<cmd>DapStepOut<CR>", desc = "Step Out" },
+      { "<leader>dt", "<cmd>DapTerminate<CR>", desc = "Terminate" },
+      { "<leader>dr", "<cmd>DapToggleRepl<CR>", desc = "Toggle REPL" },
+      { "<leader>du", function() require("dapui").toggle() end, desc = "Toggle DAP UI" },
+      { "<leader>dh", function() require("dap.ui.widgets").hover() end, desc = "DAP Hover" },
+    },
+    config = function()
+      local dap = require("dap")
+      local dapui = require("dapui")
+
+      -- Setup DAP UI
+      dapui.setup()
+
+      -- Setup virtual text
+      require("nvim-dap-virtual-text").setup({
+        enabled = true,
+        enabled_commands = true,
+        highlight_changed_variables = true,
+        highlight_new_as_changed = false,
+        show_stop_reason = true,
+        commented = false,
+        only_first_definition = true,
+        all_references = false,
+        display_callback = function(variable, _buf, _stackframe, _node)
+          return variable.name .. ' = ' .. variable.value
+        end,
+      })
+
+      -- Auto open/close DAP UI
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+
+      -- DAP signs
+      vim.fn.sign_define('DapBreakpoint', { text='🔴', texthl='', linehl='', numhl='' })
+      vim.fn.sign_define('DapBreakpointCondition', { text='🟡', texthl='', linehl='', numhl='' })
+      vim.fn.sign_define('DapLogPoint', { text='📝', texthl='', linehl='', numhl='' })
+      vim.fn.sign_define('DapStopped', { text='▶️', texthl='', linehl='', numhl='' })
+      vim.fn.sign_define('DapBreakpointRejected', { text='❌', texthl='', linehl='', numhl='' })
+    end,
+  },
+
+  -- Mason integration for debug adapters
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "mfussenegger/nvim-dap",
+    },
+    opts = {
+      ensure_installed = {
+        "python",
+        "codelldb", -- For C/C++/Rust
+        "node2",    -- For Node.js/TypeScript
+      },
+      handlers = {},
+    },
+  },
 }

@@ -29,7 +29,7 @@ vim.keymap.set('i', '<C-l>', 'copilot#Accept("<CR>")', {
 })
 
 
-vim.keymap.set('n', '<leader>dw', function()
+vim.keymap.set('n', '<leader>dbc', function()
   local dbui = vim.b.dbui_db_key_name
   
   if not dbui then
@@ -69,8 +69,28 @@ vim.keymap.set('n', '<leader>dw', function()
 
 end, { desc = 'DBUI Save Query' })
 
-vim.keymap.set('n', '<leader>du', function() 
+vim.keymap.set('n', '<leader>dbu', function() 
   vim.cmd('DBUIToggle')
 end)
 
 vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, {desc = "LSP Rename"})
+
+
+-- vim.keymap.set("n", "g;", ";", { noremap = true })
+-- vim.keymap.set("n", "g,", ",", { noremap = true })
+
+vim.keymap.set("n", "gD", function()
+  vim.cmd("split")
+  vim.lsp.buf.definition()
+end, { silent = true, desc = "Go to definition (split window)" })
+
+vim.keymap.set("n", "gV", function()
+  vim.cmd("vsplit")
+  vim.lsp.buf.definition()
+end, { silent = true, desc = "Go to definition (vertical split)" })
+
+
+vim.keymap.set("n", "gt", function()
+  vim.cmd("tab split")
+  vim.lsp.buf.definition()
+end, { silent = true, desc = "Go to definition (new tab)" })
