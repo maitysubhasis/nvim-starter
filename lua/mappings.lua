@@ -16,7 +16,7 @@ map("n", "gh", "<cmd>Lspsaga hover_doc<CR>", { silent = true, desc = "Hover doc"
 
 
 -- adds a entry in the 
-vim.keymap.set('n', '<leader>fr', require('telescope.builtin').lsp_references, { desc = '[F]ind [R]eferences' })
+vim.keymap.set('n', '<leader>gr', require('telescope.builtin').lsp_references, { desc = '[F]ind [R]eferences' })
 
 -- Disable Copilot’s default <Tab> mapping
 vim.g.copilot_no_tab_map = true
