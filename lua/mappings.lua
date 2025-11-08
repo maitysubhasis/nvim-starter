@@ -16,7 +16,7 @@ map("n", "gh", "<cmd>Lspsaga hover_doc<CR>", { silent = true, desc = "Hover doc"
 
 
 -- adds a entry in the 
-vim.keymap.set('n', '<leader>gr', require('telescope.builtin').lsp_references, { desc = '[F]ind [R]eferences' })
+vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { desc = '[F]ind [R]eferences' })
 
 -- Disable Copilot’s default <Tab> mapping
 vim.g.copilot_no_tab_map = true
@@ -94,3 +94,7 @@ vim.keymap.set("n", "gt", function()
   vim.cmd("tab split")
   vim.lsp.buf.definition()
 end, { silent = true, desc = "Go to definition (new tab)" })
+
+
+vim.keymap.set("n", "<leader>jb", "<cmd>Portal jumplist backward<cr>")
+vim.keymap.set("n", "<leader>jf", "<cmd>Portal jumplist forward<cr>")

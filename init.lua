@@ -130,3 +130,5 @@ vim.api.nvim_create_autocmd("BufLeave", {
 
 vim.cmd [[set title]]
 vim.cmd [[set relativenumber]]
+
+require("portal").setup()
