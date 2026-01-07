@@ -73,6 +73,16 @@ vim.cmd([[
   highlight DiagnosticVirtualTextHint guifg=#51afef gui=italic
 ]])
 
+-- Reduce inlay hint font size
+vim.cmd([[
+  highlight LspInlayHint guifg=#6c7086 gui=italic
+]])
+vim.api.nvim_set_hl(0, 'LspInlayHint', {
+  fg = '#6c7086',
+  italic = true,
+  blend = 10,
+})
+
 
 -- run command on file save
 vim.api.nvim_create_autocmd("BufWritePost", {
@@ -132,3 +142,37 @@ vim.cmd [[set title]]
 vim.cmd [[set relativenumber]]
 
 require("portal").setup()
+
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+vim.opt.autoread = true
+
+
+
+-- Neovide settings
+if vim.g.neovide then
+  vim.g.neovide_cursor_animation_length = 0
+  vim.g.neovide_cursor_trail_size = 0
+  vim.g.neovide_cursor_antialiasing = false
+
+  vim.g.neovide_font_size = 12
+  vim.o.guifont = "FiraCode Nerd Font:h12"
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "prisma",
+  callback = function(ev)
+    vim.lsp.start({
+      name = "prisma-language-server",
+      cmd = { "prisma-language-server", "--stdio" },
+      root_dir = vim.fs.dirname(vim.fs.find({ "package.json", "schema.prisma" }, { upward = true })[1]),
+      on_attach = function(client, bufnr)
+        -- keymaps if you want
+      end,
+    })
+  end,
+})

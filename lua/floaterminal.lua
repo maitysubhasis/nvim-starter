@@ -1,4 +1,4 @@
--- State to track the floating terminal
+
 local state = {
     buf = nil,
     win = nil,
@@ -71,8 +71,8 @@ vim.keymap.set({'n', 't'}, '<C-j>', toggle_floating_terminal, {
 })
 
 -- Optional: Add Escape key in terminal mode to exit to normal mode
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', {
-    noremap = true,
-    silent = true,
-    desc = 'Exit terminal mode'
-})
+-- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', {
+--     noremap = true,
+--     silent = true,
+--     desc = 'Exit terminal mode'
+-- 

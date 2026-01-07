@@ -98,3 +98,50 @@ end, { silent = true, desc = "Go to definition (new tab)" })
 
 vim.keymap.set("n", "<leader>jb", "<cmd>Portal jumplist backward<cr>")
 vim.keymap.set("n", "<leader>jf", "<cmd>Portal jumplist forward<cr>")
+vim.keymap.set("n", "<leader>rf", "<cmd>bd|e#<cr>")
+
+map("n", "<leader>lh", function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, {
+  desc = "Toggle lsp inlay hint"
+})
+
+-- Generate PDF from current file with syntax highlighting
+map("n", "<leader>pd", function()
+  local current_file = vim.fn.expand("%:p")
+  if current_file == "" then
+    vim.notify("No file is currently open", vim.log.levels.ERROR)
+    return
+  end
+
+  local html_file = current_file .. ".highlighted.html"
+  local pdf_file = current_file .. ".pdf"
+
+  vim.notify("Generating PDF from " .. vim.fn.expand("%:t") .. "...", vim.log.levels.INFO)
+
+  -- Generate HTML with pygmentize, then inject larger font size CSS
+  local cmd = string.format(
+    "pygmentize -f html -O full,style=colorful,linenos=table -o %s %s && " ..
+    "sed -i 's/<\\/style>/ body { font-size: 20pt; } pre { font-size: 18pt; }<\\/style>/' %s && " ..
+    "wkhtmltopdf --page-size A4 --margin-top 10mm --margin-bottom 10mm --margin-left 20mm --margin-right 10mm %s %s",
+    vim.fn.shellescape(html_file),
+    vim.fn.shellescape(current_file),
+    vim.fn.shellescape(html_file),
+    vim.fn.shellescape(html_file),
+    vim.fn.shellescape(pdf_file)
+  )
+
+  vim.fn.jobstart(cmd, {
+    on_exit = function(_, exit_code)
+      if exit_code == 0 then
+        vim.notify("PDF generated: " .. vim.fn.fnamemodify(pdf_file, ":t"), vim.log.levels.INFO)
+        -- Optionally remove the intermediate HTML file
+        vim.fn.delete(html_file)
+      else
+        vim.notify("Failed to generate PDF", vim.log.levels.ERROR)
+      end
+    end,
+    stdout_buffered = true,
+    stderr_buffered = true,
+  })
+end, { desc = "Generate PDF from current file" })
