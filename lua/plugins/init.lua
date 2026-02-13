@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    event = "BufWritePre",
     opts = require "configs.conform",
   },
 
@@ -59,7 +59,7 @@ return {
   	opts = {
   		ensure_installed = {
   			"vim", "lua", "vimdoc",
-        "html", "css", "typescript", 
+        "html", "css", "typescript",
         "tsx", "javascript",
         "c", "cpp",
   		},
@@ -98,7 +98,14 @@ return {
   {
     'esmuellert/nvim-eslint',
     config = function()
-      require('nvim-eslint').setup({})
+      require('nvim-eslint').setup({
+        settings = {
+          codeActionOnSave = {
+            enable = true,
+            mode = "all",
+          },
+        },
+      })
     end,
   },
   {
@@ -237,37 +244,19 @@ return {
     }
   },
   {
-    "tpope/vim-fugitive" 
+    "tpope/vim-fugitive"
   },
   {
     "rmagatti/auto-session",
     lazy = false,
-
-    ---enables autocomplete for opts
-    ---@module "auto-session"
-    ---@type AutoSession.Config
     opts = {
       suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
-      -- log_level = 'debug',
-    },
-    ---@type SessionLens
-    session_lens = {
-      picker = nil, -- "telescope"|"snacks"|"fzf"|"select"|nil Pickers are detected automatically but you can also set one manually. Falls back to vim.ui.select
-      load_on_setup = true, -- Only used for telescope, registers the telescope extension at startup so you can use :Telescope session-lens
-      picker_opts = nil, -- Table passed to Telescope / Snacks / Fzf-Lua to configure the picker. See below for more information
-
-      ---@type SessionLensMappings
-      mappings = {
-        -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
-        delete_session = { "i", "<C-d>" }, -- mode and key for deleting a session from the picker
-        alternate_session = { "i", "<C-s>" }, -- mode and key for swapping to alternate session from the picker
-        copy_session = { "i", "<C-y>" }, -- mode and key for copying a session from the picker
-      },
-
-      ---@type SessionControl
-      session_control = {
-        control_dir = vim.fn.stdpath("data") .. "/auto_session/", -- Auto session control dir, for control files, like alternating between two sessions with session-lens
-        control_filename = "session_control.json", -- File name of the session control file
+      post_restore_cmds = {
+        function()
+          vim.defer_fn(function()
+            vim.cmd("silent! edit")
+          end, 50)
+        end,
       },
     },
   },

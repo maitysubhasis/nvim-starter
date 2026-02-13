@@ -11,4 +11,4 @@ o.cursorlineopt = 'both' -- Highlight both line number and line background
 -- o.foldexpr = 'nvim_treesitter#foldexpr()'
 o.foldenable = false  -- Don't fold by default when opening files
 o.foldlevel = 99      -- High value = most folds open by default
-vim.opt.statuscolumn = "%C%s%=%{v:lnum}   "
+vim.opt.statuscolumn = "%C%s%=%{v:relnum?v:relnum:v:lnum}   "

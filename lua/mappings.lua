@@ -100,6 +100,8 @@ vim.keymap.set("n", "<leader>jb", "<cmd>Portal jumplist backward<cr>")
 vim.keymap.set("n", "<leader>jf", "<cmd>Portal jumplist forward<cr>")
 vim.keymap.set("n", "<leader>rf", "<cmd>bd|e#<cr>")
 
+map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Telescope git status" })
+
 map("n", "<leader>lh", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, {
