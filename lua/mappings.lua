@@ -102,6 +102,26 @@ vim.keymap.set("n", "<leader>rf", "<cmd>bd|e#<cr>")
 
 map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Telescope git status" })
 
+-- Sidebar (NvimTree) size presets — persisted across sessions
+local _sidebar_size_file = vim.fn.stdpath("data") .. "/sidebar_width"
+local _sidebar_sizes = { 25, 35, 45, 60 }
+
+local function _save_sidebar_size(size)
+  local f = io.open(_sidebar_size_file, "w")
+  if f then f:write(tostring(size)); f:close() end
+end
+
+local function _set_sidebar_size(size)
+  pcall(require("nvim-tree.api").tree.resize, { absolute = size })
+  _save_sidebar_size(size)
+end
+
+for i, size in ipairs(_sidebar_sizes) do
+  map("n", "<leader>s" .. i, function()
+    _set_sidebar_size(size)
+  end, { desc = "Sidebar width " .. size })
+end
+
 map("n", "<leader>lh", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, {

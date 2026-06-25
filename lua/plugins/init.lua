@@ -498,6 +498,15 @@ return {
     opts_extend = { "sources.default" }
   },
   {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    ft = { "markdown" },
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+  },
+  {
     'dmtrKovalenko/fff.nvim',
     build = function()
       -- this will download prebuild binary or try to use existing rustup toolchain to build from source

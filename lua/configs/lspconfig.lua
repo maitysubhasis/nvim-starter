@@ -1,8 +1,5 @@
 -- require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "clangd", "html", "cssls", "gopls", "zls", "lua_ls", "ts_ls","pyright", "eslint", "rust_analyzer" }
-vim.lsp.enable(servers)
-
 -- Configure TypeScript server with inlay hints
 vim.lsp.config.ts_ls = {
   settings = {
@@ -69,3 +66,6 @@ vim.lsp.config.rust_analyzer = {
 -- })
 
 -- read :h vim.lsp.config for changing options of lsp servers
+
+local servers = { "clangd", "html", "cssls", "gopls", "zls", "lua_ls", "ts_ls", "pyright", "eslint", "rust_analyzer" }
+vim.lsp.enable(servers)
