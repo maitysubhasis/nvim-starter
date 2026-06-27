@@ -75,6 +75,10 @@ end)
 
 vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, {desc = "LSP Rename"})
 
+vim.keymap.set("n", "<leader>cf", function()
+  require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format file" })
+
 
 -- vim.keymap.set("n", "g;", ";", { noremap = true })
 -- vim.keymap.set("n", "g,", ",", { noremap = true })

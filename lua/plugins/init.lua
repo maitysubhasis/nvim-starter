@@ -17,11 +17,10 @@ return {
   -- Core LSP config (new API)
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     config = function()
       require "configs.lspconfig"
       require "custom.configs.lspconfig"
-      
     end,
   },
 
@@ -62,6 +61,9 @@ return {
         "html", "css", "typescript",
         "tsx", "javascript",
         "c", "cpp",
+        "go", "gomod", "gowork", "gosum",
+        "clojure",
+        "swift",
   		},
   	},
   },
@@ -76,9 +78,12 @@ return {
     opts = {
       ensure_installed = {
         "gopls",
+        "goimports",
+        "gofumpt",
         "typescript-language-server",
         "pyright",
-        "zls"
+        "zls",
+        "clojure-lsp",
       },
     },
   },
@@ -372,6 +377,21 @@ return {
         dapui.close()
       end
 
+      -- Swift DAP config (uses codelldb installed by mason-nvim-dap)
+      dap.configurations.swift = {
+        {
+          name = "Launch Swift",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/.build/debug/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+          args = {},
+        },
+      }
+
       -- DAP signs
       vim.fn.sign_define('DapBreakpoint', { text='🔴', texthl='', linehl='', numhl='' })
       vim.fn.sign_define('DapBreakpointCondition', { text='🟡', texthl='', linehl='', numhl='' })
@@ -391,11 +411,22 @@ return {
     opts = {
       ensure_installed = {
         "python",
-        "codelldb", -- For C/C++/Rust
-        "node2",    -- For Node.js/TypeScript
+        "codelldb",
+        "node2",
+        "delve",
       },
       handlers = {},
     },
+  },
+  {
+    "leoluz/nvim-dap-go",
+    dependencies = { "mfussenegger/nvim-dap" },
+    ft = "go",
+    config = function()
+      require("dap-go").setup()
+      vim.keymap.set("n", "<leader>dt", function() require("dap-go").debug_test() end, { desc = "Debug Go test" })
+      vim.keymap.set("n", "<leader>dT", function() require("dap-go").debug_last_test() end, { desc = "Debug last Go test" })
+    end,
   },
   {
     "cbochs/portal.nvim",
@@ -497,6 +528,61 @@ return {
     },
     opts_extend = { "sources.default" }
   },
+
+  -- Rainbow delimiters (treesitter-based)
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "BufReadPost",
+    config = function()
+      local rainbow = require("rainbow-delimiters")
+      require("rainbow-delimiters.setup").setup({
+        strategy = { [""] = rainbow.strategy["global"] },
+        query = { [""] = "rainbow-delimiters", clojure = "rainbow-delimiters" },
+        highlight = {
+          "RainbowDelimiterRed",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterViolet",
+          "RainbowDelimiterCyan",
+        },
+      })
+    end,
+  },
+
+  -- vim-fireplace: Clojure REPL integration (tpope)
+  {
+    "tpope/vim-fireplace",
+    ft = { "clojure", "edn" },
+    dependencies = {
+      "tpope/vim-dispatch",
+      "tpope/vim-salve",
+    },
+  },
+  { "tpope/vim-dispatch", lazy = true },
+  { "tpope/vim-salve", ft = { "clojure", "edn" } },
+
+  -- Clojure REPL integration
+  {
+    "Olical/conjure",
+    ft = { "clojure", "edn" },
+    init = function()
+      vim.g["conjure#mapping#prefix"] = ","
+      vim.g["conjure#client#clojure#nrepl#connection#auto_repl#enabled"] = false
+    end,
+  },
+  -- Structural s-expression editing
+  {
+    "guns/vim-sexp",
+    ft = { "clojure", "edn", "fennel", "scheme", "lisp" },
+    dependencies = { "tpope/vim-sexp-mappings-for-regular-people" },
+  },
+  {
+    "tpope/vim-sexp-mappings-for-regular-people",
+    ft = { "clojure", "edn", "fennel", "scheme", "lisp" },
+  },
+
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },

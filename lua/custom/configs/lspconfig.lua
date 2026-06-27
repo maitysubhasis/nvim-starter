@@ -6,4 +6,4 @@ local lspconfig = vim.lsp.config  -- ✅ new entry point
 local util = require "lspconfig/util"
 
 
-print(vim.inspect(vim.lsp.get_clients()))
+

@@ -1,5 +1,14 @@
 -- require("nvchad.configs.lspconfig").defaults()
 
+local servers = { "clangd", "html", "cssls", "gopls", "zls", "lua_ls", "ts_ls","pyright", "eslint", "rust_analyzer", "clojure_lsp", "sourcekit" }
+vim.lsp.enable(servers)
+
+vim.lsp.config.sourcekit = {
+  cmd = { "/usr/bin/sourcekit-lsp" },
+  filetypes = { "swift", "objc", "objcpp" },
+  root_markers = { "Package.swift", ".git" },
+}
+
 -- Configure TypeScript server with inlay hints
 vim.lsp.config.ts_ls = {
   settings = {
@@ -64,6 +73,28 @@ vim.lsp.config.rust_analyzer = {
 --     end
 --   end,
 -- })
+
+vim.lsp.config.gopls = {
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+        shadow = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    },
+  },
+}
 
 -- read :h vim.lsp.config for changing options of lsp servers
 

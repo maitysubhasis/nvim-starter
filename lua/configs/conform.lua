@@ -12,6 +12,16 @@ local options = {
     jsonc = { "prettier" },
     markdown = { "prettier" },
     yaml = { "prettier" },
+    go = { "goimports", "gofmt" },
+    clojure = { "clojure-lsp" },
+    edn = { "clojure-lsp" },
+    swift = { "swift_format" },
+  },
+
+  formatters = {
+    swift_format = {
+      command = "/Library/Developer/CommandLineTools/usr/bin/swift-format",
+    },
   },
 
   format_on_save = {
