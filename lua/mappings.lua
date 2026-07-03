@@ -125,6 +125,63 @@ for i, size in ipairs(_sidebar_sizes) do
     _set_sidebar_size(size)
   end, { desc = "Sidebar width " .. size })
 end
+local function live_grep_glob(query, glob, title)
+  query = query or vim.fn.input("Grep query: ", vim.fn.expand("<cword>"))
+  if query == "" then
+    return
+  end
+
+  glob = glob or vim.fn.input("File glob: ", "*." .. vim.fn.expand("%:e"))
+  if glob == "*." then
+    glob = ""
+  end
+  if glob == "" then
+    return
+  end
+
+  title = title or (type(glob) == "table" and table.concat(glob, ", ") or glob)
+
+  require("telescope.builtin").live_grep({
+    default_text = query,
+    glob_pattern = glob,
+    prompt_title = "Live Grep (" .. title .. ")",
+  })
+end
+
+vim.api.nvim_create_user_command("LiveGrepGlob", function(opts)
+  local args = vim.deepcopy(opts.fargs)
+  if #args >= 2 then
+    local glob = table.remove(args)
+    live_grep_glob(table.concat(args, " "), glob)
+  else
+    live_grep_glob()
+  end
+end, { nargs = "*", complete = "file" })
+
+map("n", "<leader>fG", function()
+  live_grep_glob()
+end, { desc = "Telescope live grep by glob" })
+
+map("n", "<leader>gt", function()
+  require("telescope.builtin").live_grep({
+    glob_pattern = { "*.ts", "*.tsx" },
+    prompt_title = "Live Grep (*.ts, *.tsx)",
+  })
+end, { desc = "Telescope live grep TypeScript" })
+
+map("n", "<leader>gj", function()
+  require("telescope.builtin").live_grep({
+    glob_pattern = { "*.js", "*.jsx" },
+    prompt_title = "Live Grep (*.js, *.jsx)",
+  })
+end, { desc = "Telescope live grep JavaScript" })
+
+map("n", "<leader>gm", function()
+  require("telescope.builtin").live_grep({
+    glob_pattern = "*.md",
+    prompt_title = "Live Grep (*.md)",
+  })
+end, { desc = "Telescope live grep Markdown" })
 
 map("n", "<leader>lh", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
