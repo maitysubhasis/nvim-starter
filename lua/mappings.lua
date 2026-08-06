@@ -117,6 +117,12 @@ map("n", "<leader>bkc", function()
 end, { desc = "Delete all but current buffer" })
 
 map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Telescope git status" })
+map("n", "[c", function()
+  require("gitsigns").prev_hunk()
+end, { desc = "Previous git hunk" })
+map("n", "]c", function()
+  require("gitsigns").next_hunk()
+end, { desc = "Next git hunk" })
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle NvimTree" })
 
 -- Sidebar (NvimTree) size presets — persisted across sessions
