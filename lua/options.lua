@@ -5,6 +5,15 @@ require "nvchad.options"
 local o = vim.o
 o.cursorline = true -- Enable cursorline highlighting
 o.cursorlineopt = 'both' -- Highlight both line number and line background
+o.termguicolors = true
+o.conceallevel = 2
+o.signcolumn = 'yes'
+vim.opt.fillchars = {
+  eob = ' ',
+  fold = ' ',
+  foldopen = '',
+  foldclose = '',
+}
 
 -- Enable treesitter-based folding
 -- o.foldmethod = 'expr'

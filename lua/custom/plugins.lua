@@ -15,5 +15,4 @@ local plugins = {
 }
 
 -- Add your custom plugins here
-
 return plugins

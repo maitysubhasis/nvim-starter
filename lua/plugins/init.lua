@@ -1,5 +1,47 @@
 return {
   {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "quarto" },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-mini/mini.icons",
+    },
+    opts = {
+      heading = {
+        enabled = true,
+        position = "overlay",
+        width = "full",
+        icons = { "󰲡 ", "󰲣 ", "󰲥 ", "󰲧 ", "󰲩 ", "󰲫 " },
+      },
+      code = {
+        enabled = true,
+        style = "full",
+        border = "thick",
+      },
+    },
+  },
+
+  {
+    "arnamak/stay-centered.nvim",
+    lazy = false,
+    opts = {},
+  },
+
+  {
+    "isakbm/gitgraph.nvim",
+    opts = {},
+    keys = {
+      {
+        "<leader>gl",
+        function()
+          require("gitgraph").draw({}, { all = true, max_count = 5000 })
+        end,
+        desc = "GitGraph - Draw",
+      },
+    },
+  },
+
+  {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     opts = require "configs.conform",
@@ -56,8 +98,9 @@ return {
   {
   	"nvim-treesitter/nvim-treesitter",
   	opts = {
-  		ensure_installed = {
-  			"vim", "lua", "vimdoc",
+      ensure_installed = {
+			"vim", "lua", "vimdoc",
+        "markdown", "markdown_inline",
         "html", "css", "typescript",
         "tsx", "javascript",
         "c", "cpp",
@@ -618,4 +661,30 @@ return {
       }
     }
   }, 
+  {
+    "pwntester/octo.nvim",
+    cmd = "Octo",
+    opts = {
+      picker = "telescope",
+      enable_builtin = true,
+    },
+    keys = {
+      { "<leader>ghi", "<cmd>Octo issue list<CR>", desc = "List GitHub issues" },
+      { "<leader>ghp", "<cmd>Octo pr list<CR>", desc = "List GitHub pull requests" },
+      { "<leader>ghn", "<cmd>Octo notification list<CR>", desc = "List GitHub notifications" },
+      {
+        "<leader>ghs",
+        function()
+          require("octo.utils").create_base_search_command({ include_current_repo = true })
+        end,
+        desc = "Search GitHub",
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
+
 }

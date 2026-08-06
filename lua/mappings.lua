@@ -104,7 +104,20 @@ vim.keymap.set("n", "<leader>jb", "<cmd>Portal jumplist backward<cr>")
 vim.keymap.set("n", "<leader>jf", "<cmd>Portal jumplist forward<cr>")
 vim.keymap.set("n", "<leader>rf", "<cmd>bd|e#<cr>")
 
+map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
+map("n", "<leader>bn", "<cmd>enew<cr>", { desc = "New buffer" })
+map("n", "<leader>bda", "<cmd>bufdo bdelete<cr>", { desc = "Delete all buffers" })
+map("n", "<leader>bkc", function()
+  local current = vim.api.nvim_get_current_buf()
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if bufnr ~= current and vim.api.nvim_buf_is_valid(bufnr) then
+      pcall(vim.api.nvim_buf_delete, bufnr, {})
+    end
+  end
+end, { desc = "Delete all but current buffer" })
+
 map("n", "<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "Telescope git status" })
+map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle NvimTree" })
 
 -- Sidebar (NvimTree) size presets — persisted across sessions
 local _sidebar_size_file = vim.fn.stdpath("data") .. "/sidebar_width"
