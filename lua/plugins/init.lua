@@ -1,5 +1,10 @@
 return {
   {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+  },
+
+  {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown", "quarto" },
     dependencies = {

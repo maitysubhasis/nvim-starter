@@ -1,0 +1,8 @@
+WRN 2026-08-06T23:16:32.504 ?.94864    server_start:197: Failed to start server: operation not permitted: /tmp/claude-501/nvim.msu/uwd7xJ/nvim.94864.0
+WRN 2026-08-06T23:39:58.358 ?.97238    server_start:197: Failed to start server: operation not permitted: /tmp/claude-501/nvim.msu/RxXUik/nvim.97238.0
+WRN 2026-08-06T23:42:27.227 ?.98323    server_start:197: Failed to start server: operation not permitted: /tmp/claude-501/nvim.msu/IpV7bC/nvim.98323.0
+WRN 2026-08-06T23:42:34.412 ?.98347    server_start:197: Failed to start server: operation not permitted: /tmp/claude-501/nvim.msu/EtxRaC/nvim.98347.0
+WRN 2026-08-06T23:46:25.332 ?.98791    server_start:197: Failed to start server: operation not permitted: /tmp/claude-501/nvim.msu/uabZRX/nvim.98791.0
+WRN 2026-08-06T23:49:16.540 ?.99172    server_start:197: Failed to start server: operation not permitted: /tmp/claude-501/nvim.msu/X2E0UY/nvim.99172.0
+WRN 2026-08-07T00:33:50.044 ?.8238     server_start:197: Failed to start server: operation not permitted: /var/folders/sn/mqj7hs1d6_b1d9_sz7m_k44m0000gn/T/nvim.msu/bhDbHl/nvim.8238.0
+WRN 2026-08-07T00:34:00.593 ?.8280     server_start:197: Failed to start server: operation not permitted: /var/folders/sn/mqj7hs1d6_b1d9_sz7m_k44m0000gn/T/nvim.msu/ULCxCE/nvim.8280.0

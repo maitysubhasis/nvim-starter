@@ -68,6 +68,7 @@
   "vim-salve": { "branch": "master", "commit": "92f6553654c3d2b6de0158fc4a59c4496dfc8105" },
   "vim-sexp": { "branch": "master", "commit": "1bf50921308f0188d1c1ecf8a712cc72ab2775e5" },
   "vim-sexp-mappings-for-regular-people": { "branch": "master", "commit": "4debb74b0a3e530f1b18e5b7dff98a40b2ad26f1" },
+  "vim-tmux-navigator": { "branch": "master", "commit": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432" },
   "volt": { "branch": "main", "commit": "620de1321f275ec9d80028c68d1b88b409c0c8b1" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" }
 }

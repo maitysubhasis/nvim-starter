@@ -21,3 +21,5 @@ vim.opt.fillchars = {
 o.foldenable = false  -- Don't fold by default when opening files
 o.foldlevel = 99      -- High value = most folds open by default
 vim.opt.statuscolumn = "%C%s%=%{v:relnum?v:relnum:v:lnum}   "
+
+require("configs.tabufline").setup()

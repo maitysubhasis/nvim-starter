@@ -16,11 +16,20 @@ M.base46 = {
 }
 
 -- M.nvdash = { load_on_startup = true }
--- M.ui = {
---       tabufline = {
---          lazyload = false
---      }
--- }
+
+-- lazyload = false so NvChad sets vim.o.tabline at plugin load, before
+-- configs.tabufline overrides it in options.lua
+M.ui = {
+	tabufline = {
+		lazyload = false,
+		-- drop the top-right button group: close-all-buffers + theme toggle
+		modules = {
+			btns = function()
+				return ""
+			end,
+		},
+	},
+}
 
 --M.plugins = "custom.plugins"
 
